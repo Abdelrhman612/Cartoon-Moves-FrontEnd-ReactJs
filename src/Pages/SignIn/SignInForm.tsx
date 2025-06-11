@@ -9,7 +9,8 @@ const SignInForm = () => {
   const HandleSignIn = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      await AuthService().SignIn({ email, password });
+      const res = await AuthService().SignIn({ email, password });
+      localStorage.setItem("Token", res.data.token);
       alert("Sign In Successfully ✅");
     } catch (err) {
       console.error("Sign in error:", err);
