@@ -1,6 +1,6 @@
 import axios from "axios";
-import type { SignUpData } from "./Auth.InterFace";
-import { SignUpUrl } from "../api";
+import type { SignInData, SignUpData } from "./Auth.InterFace";
+import { SignInUrl, SignUpUrl } from "../api";
 export const AuthService = () => {
   const SignUp = ({ firstName, lastName, email, password }: SignUpData) => {
     return axios.post(SignUpUrl, {
@@ -10,5 +10,11 @@ export const AuthService = () => {
       password,
     });
   };
-  return { SignUp };
+  const SignIn = ({ email, password }: SignInData) => {
+    return axios.post(SignInUrl, {
+      email,
+      password,
+    });
+  };
+  return { SignUp, SignIn };
 };
