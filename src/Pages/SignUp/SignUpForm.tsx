@@ -8,7 +8,7 @@ const SignUpForm = () => {
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [role, setRole] = useState("");
+
   const HandleSignUp = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
@@ -17,7 +17,6 @@ const SignUpForm = () => {
         lastName,
         email,
         password,
-        role,
       });
 
       alert("Sign Up Successfully ✅");
@@ -63,14 +62,6 @@ const SignUpForm = () => {
           placeholder="Choose a password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-        />
-      </Form.Group>
-      <Form.Group className="mb-3">
-        <Form.Label>role</Form.Label>
-        <Form.Control
-          type="text"
-          value={role}
-          onChange={(e) => setRole(e.target.value)}
         />
       </Form.Group>
       <div className="d-grid">
