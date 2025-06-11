@@ -1,14 +1,14 @@
 import { useState } from "react";
 import { AuthService } from "../../Service/Auth/Auth.Service";
-import { Form } from "react-bootstrap";
-import { useNavigate } from "react-router-dom";
+import { Button, Form } from "react-bootstrap";
+import { Link } from "react-router";
 
 const SignUpForm = () => {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const navegate = useNavigate();
+  const [role, setRole] = useState("");
   const HandleSignUp = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
@@ -17,9 +17,10 @@ const SignUpForm = () => {
         lastName,
         email,
         password,
+        role,
       });
-      alert("Sign Up Successful");
-      navegate("/HomePage");
+
+      alert("Sign Up Successfully ✅");
     } catch (error) {
       console.error("Sign Up Error:", error);
       alert("Sign Up Failed");
@@ -59,11 +60,27 @@ const SignUpForm = () => {
         <Form.Label>password</Form.Label>
         <Form.Control
           type="password"
-          placeholder="Enter Your Password"
+          placeholder="Choose a password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
       </Form.Group>
+      <Form.Group className="mb-3">
+        <Form.Label>role</Form.Label>
+        <Form.Control
+          type="text"
+          value={role}
+          onChange={(e) => setRole(e.target.value)}
+        />
+      </Form.Group>
+      <div className="d-grid">
+        <Button variant="primary" type="submit" className="fw-bold py-2">
+          Sign Up
+        </Button>
+      </div>
+      <div className="text-center py-3">
+        <Link to="/">Sign In</Link>
+      </div>
     </Form>
   );
 };
