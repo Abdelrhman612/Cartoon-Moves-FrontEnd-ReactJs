@@ -10,11 +10,12 @@ export const AuthService = () => {
       password,
     });
   };
-  const SignIn = ({ email, password }: SignInData) => {
-    return axios.post(SignInUrl, {
+  const SignIn = async ({ email, password }: SignInData) => {
+    const res = await axios.post(SignInUrl, {
       email,
       password,
     });
+    return localStorage.setItem("Token", res.data.token);
   };
   return { SignUp, SignIn };
 };
