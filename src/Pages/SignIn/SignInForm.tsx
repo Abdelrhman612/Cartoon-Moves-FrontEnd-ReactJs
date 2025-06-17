@@ -1,22 +1,10 @@
-import { useState } from "react";
-import { AuthService } from "../../Service/Auth/Auth.Service";
 import { Button, Form } from "react-bootstrap";
 import { Link } from "react-router";
+import UseAuth from "../../Hooks/UseAuth";
 
 const SignInForm = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const HandleSignIn = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    try {
-      const res = await AuthService().SignIn({ email, password });
-      localStorage.setItem("Token", res.data.token);
-      alert("Sign In Successfully ✅");
-    } catch (err) {
-      console.error("Sign in error:", err);
-      alert("Sign In Failed");
-    }
-  };
+  const { email, setEmail, password, setPassword, HandleSignIn } =
+    UseAuth().useSignIn();
   return (
     <Form onSubmit={HandleSignIn}>
       <Form.Group className="mb-3">
