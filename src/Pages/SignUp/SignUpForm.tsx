@@ -1,31 +1,18 @@
-import { useState } from "react";
-import { AuthService } from "../../Service/Auth/Auth.Service";
 import { Button, Form } from "react-bootstrap";
 import { Link } from "react-router";
-
+import UseAuth from "../../Hooks/UseAuth";
 const SignUpForm = () => {
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-
-  const HandleSignUp = async (e: React.FormEvent) => {
-    e.preventDefault();
-    try {
-      await AuthService().SignUp({
-        firstName,
-        lastName,
-        email,
-        password,
-      });
-
-      alert("Sign Up Successfully ✅");
-    } catch (error) {
-      console.error("Sign Up Error:", error);
-      alert("Sign Up Failed");
-    }
-  };
-
+  const {
+    firstName,
+    setFirstName,
+    lastName,
+    setLastName,
+    email,
+    setEmail,
+    password,
+    setPassword,
+    HandleSignUp,
+  } = UseAuth().useSignUp();
   return (
     <Form onSubmit={HandleSignUp}>
       <Form.Group className="mb-3">
