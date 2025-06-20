@@ -16,11 +16,11 @@ const MovieCard = ({
         <Card.Title>{title}</Card.Title>
         <Card.Text>{description}</Card.Text>
         <div className="d-flex justify-content-between">
-          <Button variant="success" href={videoUrl}>
-            Watch now
-          </Button>
           <Button variant="warning" onClick={onEdit}>
             Edit
+          </Button>
+          <Button variant="success" href={videoUrl}>
+            Watch now
           </Button>
           <Button variant="danger" onClick={onDelete} className="ms-2">
             Delete
