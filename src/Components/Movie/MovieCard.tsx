@@ -8,6 +8,9 @@ const MovieCard = ({
   image,
   onEdit,
   onDelete,
+  onToggleFavorite,
+  isFavorite,
+  onShowReviews,
 }: MovieCardProps) => {
   return (
     <Card style={{ height: "100%" }}>
@@ -15,15 +18,26 @@ const MovieCard = ({
       <Card.Body>
         <Card.Title>{title}</Card.Title>
         <Card.Text>{description}</Card.Text>
-        <div className="d-flex justify-content-between">
+        <div className="d-flex flex-wrap justify-content-between gap-2 mt-3">
           <Button variant="warning" onClick={onEdit}>
-            Edit
+            ✏️ Edit
           </Button>
-          <Button variant="success" href={videoUrl}>
-            Watch now
+          <Button variant="success" href={videoUrl} target="_blank">
+            ▶️ Watch
           </Button>
-          <Button variant="danger" onClick={onDelete} className="ms-2">
-            Delete
+          <Button variant="danger" onClick={onDelete}>
+            🗑️ Delete
+          </Button>
+          {onToggleFavorite && (
+            <Button
+              variant={isFavorite ? "outline-danger" : "outline-primary"}
+              onClick={onToggleFavorite}
+            >
+              {isFavorite ? "💔 Remove Favorite" : "❤️ Add to Favorite"}
+            </Button>
+          )}
+          <Button variant="info" onClick={onShowReviews}>
+            View Reviews
           </Button>
         </div>
       </Card.Body>
