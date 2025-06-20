@@ -4,9 +4,18 @@ import MovieCard from "../../Components/Movie/MovieCard";
 import MovieModal from "../../Components/Movie/MovieModal";
 import { UseMoves } from "../../Hooks/UseMoves";
 import type { MovieHomeProps } from "./Home.interface";
+import type { ReviewInterface } from "../../Components/Review/Review.interface";
+import { ReviewService } from "../../Service/Review/Review.Service";
+import ReviewModal from "../../Components/Review/ReviewModal";
 
 function Home() {
-  const { useGetMovies } = UseMoves();
+  const userId = localStorage.getItem("UserId") || ""; // ✅ replace with actual auth logic
+  const { useGetMovies, useDeleteMovie, useFavorites } = UseMoves();
+  const [showReviewModal, setShowReviewModal] = useState(false);
+  const [selectedMovieReviews, setSelectedMovieReviews] = useState<
+    ReviewInterface[]
+  >([]);
+  const [reviewMovieTitle, setReviewMovieTitle] = useState("");
   const {
     filteredMovies,
     searchInput,
@@ -15,8 +24,15 @@ function Home() {
     loading,
     fetchMovies,
   } = useGetMovies();
-  const { useDeleteMovie } = UseMoves();
+
   const { deleteMovie } = useDeleteMovie();
+  const {
+    favorites,
+    addFavorite,
+    removeFavorite,
+    loading: favLoading,
+  } = useFavorites(userId);
+
   const [showModal, setShowModal] = useState(false);
   const [selectedMovie, setSelectedMovie] = useState<
     MovieHomeProps | undefined
@@ -31,6 +47,7 @@ function Home() {
     setSelectedMovie(undefined);
     setShowModal(false);
   };
+
   const handleDelete = async (id: string) => {
     if (window.confirm("Are you sure you want to delete this movie?")) {
       await deleteMovie(id);
@@ -39,11 +56,30 @@ function Home() {
   };
 
   const handleFormSubmit = async () => {
-    await fetchMovies(); // re-fetch movies after create/edit
-    handleCloseModal(); // close modal
+    await fetchMovies(); // Re-fetch after create/edit
+    handleCloseModal(); // Close modal
+  };
+  const handleShowReviews = async (movie: MovieHomeProps) => {
+    const data = await ReviewService().getReviews(movie.id); // يفترض عندك ReviewService
+    setSelectedMovieReviews(data);
+    setReviewMovieTitle(movie.title);
+    setShowReviewModal(true);
   };
 
-  if (loading) {
+  const handleToggleFavorite = (movieId: string) => {
+    console.log("clicked", movieId); // ✅ Debug
+    const isFav = favorites.some((fav) => fav.id === movieId);
+    if (isFav) {
+      removeFavorite(movieId);
+    } else {
+      addFavorite(movieId);
+    }
+  };
+  const isFavorite = (movieId: string) => {
+    return favorites.some((fav) => fav.id === movieId);
+  };
+
+  if (loading || favLoading) {
     return (
       <Container className="text-center py-5">
         <Spinner animation="border" />
@@ -84,6 +120,9 @@ function Home() {
                 {...movie}
                 onEdit={() => handleOpenModal(movie)}
                 onDelete={() => handleDelete(movie.id)}
+                onToggleFavorite={() => handleToggleFavorite(movie.id)}
+                isFavorite={isFavorite(movie.id)}
+                onShowReviews={() => handleShowReviews(movie)}
               />
             </Col>
           ))
@@ -97,6 +136,12 @@ function Home() {
         onClose={handleCloseModal}
         initialData={selectedMovie}
         onSubmit={handleFormSubmit}
+      />
+      <ReviewModal
+        show={showReviewModal}
+        onClose={() => setShowReviewModal(false)}
+        reviews={selectedMovieReviews}
+        movieTitle={reviewMovieTitle}
       />
     </Container>
   );

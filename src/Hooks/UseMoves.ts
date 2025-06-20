@@ -1,11 +1,15 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 // src/hooks/UseMoves.ts
 import { useEffect, useState } from "react";
 import { MoviesService } from "../Service/Movie/Movie.Service";
 import type { MovieInterface } from "../Components/Movie/Move.interface";
 import type { HookInterface } from "./Hook.InterFace";
+import { FavoriteService } from "../Service/favorite/favorite.service";
+import { ReviewService } from "../Service/Review/Review.Service";
 
 export const UseMoves = () => {
   const movieService = MoviesService();
+  const favoriteService = FavoriteService();
 
   // ----------------------------
   // 📌 GET MOVIES SECTION
@@ -44,8 +48,9 @@ export const UseMoves = () => {
       fetchMovies,
     };
   };
+
   // ----------------------------
-  // 📌 POST MOVIES SECTION
+  // 📌 CREATE MOVIE SECTION
   // ----------------------------
   const useCreateMovie = () => {
     const [loading, setLoading] = useState(false);
@@ -62,8 +67,9 @@ export const UseMoves = () => {
 
     return { createMovie, loading };
   };
+
   // ----------------------------
-  // 📌 PATCH MOVIE SECTION
+  // 📌 UPDATE MOVIE SECTION
   // ----------------------------
   const useUpdateMovie = () => {
     const [loading, setLoading] = useState(false);
@@ -80,6 +86,10 @@ export const UseMoves = () => {
 
     return { updateMovie, loading };
   };
+
+  // ----------------------------
+  // 📌 DELETE MOVIE SECTION
+  // ----------------------------
   const useDeleteMovie = () => {
     const [loading, setLoading] = useState(false);
     const deleteMovie = async (id: string) => {
@@ -96,10 +106,94 @@ export const UseMoves = () => {
     return { deleteMovie, loading };
   };
 
+  // ----------------------------
+  // 📌 FAVORITES SECTION
+  // ----------------------------
+  const useFavorites = (userId: string) => {
+    const [favorites, setFavorites] = useState<MovieInterface[]>([]);
+    const [loading, setLoading] = useState(false);
+
+    const fetchFavorites = async () => {
+      try {
+        setLoading(true);
+        const data = await favoriteService.getFavorites(userId);
+        setFavorites(data);
+      } catch (err) {
+        console.error("Error fetching favorites:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    const addFavorite = async (movieId: string) => {
+      try {
+        await favoriteService.addFavorite(movieId, userId);
+        fetchFavorites();
+      } catch (err) {
+        console.error("Error adding favorite:", err);
+      }
+    };
+
+    const removeFavorite = async (movieId: string) => {
+      try {
+        await favoriteService.removeFavorite(movieId, userId);
+        fetchFavorites();
+      } catch (err) {
+        console.error("Error removing favorite:", err);
+      }
+    };
+
+    useEffect(() => {
+      if (userId) fetchFavorites();
+    }, [userId]);
+
+    return {
+      favorites,
+      loading,
+      addFavorite,
+      removeFavorite,
+      fetchFavorites,
+    };
+  };
+  const useReviews = (movieId: string) => {
+    const [reviews, setReviews] = useState([]);
+    const [loading, setLoading] = useState(false);
+    const reviewService = ReviewService();
+
+    const fetchReviews = async () => {
+      try {
+        setLoading(true);
+        const data = await reviewService.getReviews(movieId);
+        setReviews(data);
+      } catch (err) {
+        console.error("Error fetching reviews:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    const addReview = async (userId: string, content: string) => {
+      try {
+        await reviewService.addReview({ movieId, userId, content });
+        fetchReviews();
+      } catch (err) {
+        console.error("Error adding review:", err);
+      }
+    };
+
+    useEffect(() => {
+      if (movieId) fetchReviews();
+    }, [movieId]);
+
+    return { reviews, loading, addReview };
+  };
+
   return {
     useGetMovies,
     useCreateMovie,
     useUpdateMovie,
     useDeleteMovie,
+    useFavorites,
+    useReviews,
   };
 };
