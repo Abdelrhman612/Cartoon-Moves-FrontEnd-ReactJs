@@ -1,7 +1,13 @@
 import { Button, Card } from "react-bootstrap";
 import type { MovieCardProps } from "./Move.interface";
 
-const MovieCard = ({ title, description, videoUrl, image }: MovieCardProps) => {
+const MovieCard = ({
+  title,
+  description,
+  videoUrl,
+  image,
+  onEdit,
+}: MovieCardProps) => {
   return (
     <Card style={{ height: "100%" }}>
       <Card.Img variant="top" src={image} height={300} />
@@ -10,6 +16,9 @@ const MovieCard = ({ title, description, videoUrl, image }: MovieCardProps) => {
         <Card.Text>{description}</Card.Text>
         <Button variant="success" href={videoUrl}>
           Watch now
+        </Button>
+        <Button variant="warning" onClick={onEdit}>
+          Edit
         </Button>
       </Card.Body>
     </Card>
