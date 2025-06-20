@@ -1,3 +1,5 @@
+import type { MovieHomeProps } from "../../Pages/Home/Home.interface";
+
 export interface MovieCardProps {
   title: string;
   description: string;
@@ -5,6 +7,9 @@ export interface MovieCardProps {
   image: string;
   onEdit: () => void;
   onDelete?: () => void;
+  onToggleFavorite?: () => void;
+  isFavorite?: boolean;
+  onShowReviews?: () => void;
 }
 export interface MovieInterface {
   id: string;
@@ -24,9 +29,9 @@ export interface PropsModal {
   show: boolean;
   onClose: () => void;
   initialData?: MovieInterface;
-  onSubmit: () => void;
+  onSubmit: (data: Omit<MovieHomeProps, "id">) => void | Promise<void>;
 }
 export interface PropsForm {
   initialData?: MovieInterface;
-  onSubmit: () => void;
+  onSubmit: (data: Omit<MovieHomeProps, "id">) => void | Promise<void>;
 }
