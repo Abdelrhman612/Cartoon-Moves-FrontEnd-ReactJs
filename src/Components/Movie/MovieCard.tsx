@@ -1,5 +1,5 @@
 import { Button, Card } from "react-bootstrap";
-import type { MovieCardProps } from "./MoveCard.interface";
+import type { MovieCardProps } from "./Move.interface";
 
 const MovieCard = ({ title, description, videoUrl, image }: MovieCardProps) => {
   return (
