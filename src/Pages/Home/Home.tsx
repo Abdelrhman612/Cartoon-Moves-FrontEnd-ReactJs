@@ -15,7 +15,8 @@ function Home() {
     loading,
     fetchMovies,
   } = useGetMovies();
-
+  const { useDeleteMovie } = UseMoves();
+  const { deleteMovie } = useDeleteMovie();
   const [showModal, setShowModal] = useState(false);
   const [selectedMovie, setSelectedMovie] = useState<
     MovieHomeProps | undefined
@@ -29,6 +30,12 @@ function Home() {
   const handleCloseModal = () => {
     setSelectedMovie(undefined);
     setShowModal(false);
+  };
+  const handleDelete = async (id: string) => {
+    if (window.confirm("Are you sure you want to delete this movie?")) {
+      await deleteMovie(id);
+      await fetchMovies();
+    }
   };
 
   const handleFormSubmit = async () => {
@@ -73,7 +80,11 @@ function Home() {
         {filteredMovies.length > 0 ? (
           filteredMovies.map((movie) => (
             <Col key={movie.id} md={4} className="mb-4">
-              <MovieCard {...movie} onEdit={() => handleOpenModal(movie)} />
+              <MovieCard
+                {...movie}
+                onEdit={() => handleOpenModal(movie)}
+                onDelete={() => handleDelete(movie.id)}
+              />
             </Col>
           ))
         ) : (
