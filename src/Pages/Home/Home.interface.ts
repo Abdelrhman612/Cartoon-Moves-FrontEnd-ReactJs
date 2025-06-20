@@ -1,4 +1,4 @@
-export interface Movie {
+export interface MovieHomeProps {
   id: string;
   title: string;
   description: string;
