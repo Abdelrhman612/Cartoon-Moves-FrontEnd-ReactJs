@@ -39,5 +39,13 @@ export const MoviesService = () => {
     });
     return res.data.data;
   };
-  return { getMovies, createMovie, updateMovie };
+  const deleteMovie = async (id: string) => {
+    const res = await axios.delete(`${MovieUrl}/${id}`, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("Token")}`,
+      },
+    });
+    return res.data.data;
+  };
+  return { getMovies, createMovie, updateMovie, deleteMovie };
 };
