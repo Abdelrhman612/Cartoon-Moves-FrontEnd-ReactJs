@@ -5,8 +5,8 @@ import MovieModal from "../../Components/Movie/MovieModal";
 import { UseMoves } from "../../Hooks/UseMoves";
 import type { MovieHomeProps } from "./Home.interface";
 import type { ReviewInterface } from "../../Components/Review/Review.interface";
-import { ReviewService } from "../../Service/Review/Review.Service";
 import ReviewModal from "../../Components/Review/ReviewModal";
+import { ReviewService } from "../../Service/Review/Review.Service";
 
 function Home() {
   const userId = localStorage.getItem("UserId") || ""; // ✅ replace with actual auth logic
