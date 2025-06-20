@@ -10,5 +10,34 @@ export const MoviesService = () => {
     });
     return res.data.data;
   };
-  return { getMovies };
+  const createMovie = async (data: {
+    title: string;
+    description: string;
+    image: string;
+    videoUrl: string;
+  }) => {
+    const res = await axios.post(MovieUrl, data, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("Token")}`,
+      },
+    });
+    return res.data.data;
+  };
+  const updateMovie = async (
+    id: string,
+    data: {
+      title: string;
+      description: string;
+      image: string;
+      videoUrl: string;
+    }
+  ) => {
+    const res = await axios.patch(`${MovieUrl}/${id}`, data, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("Token")}`,
+      },
+    });
+    return res.data.data;
+  };
+  return { getMovies, createMovie, updateMovie };
 };
