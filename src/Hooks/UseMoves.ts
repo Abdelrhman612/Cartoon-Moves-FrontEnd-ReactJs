@@ -80,10 +80,26 @@ export const UseMoves = () => {
 
     return { updateMovie, loading };
   };
+  const useDeleteMovie = () => {
+    const [loading, setLoading] = useState(false);
+    const deleteMovie = async (id: string) => {
+      try {
+        setLoading(true);
+        await movieService.deleteMovie(id);
+      } catch (error) {
+        console.error("Delete movie error:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    return { deleteMovie, loading };
+  };
 
   return {
     useGetMovies,
     useCreateMovie,
     useUpdateMovie,
+    useDeleteMovie,
   };
 };
