@@ -38,7 +38,7 @@ const MovieForm = ({ initialData, onSubmit }: PropsForm) => {
     setDescription("");
     setImage("");
     setVideoUrl("");
-    onSubmit();
+    onSubmit({ title, description, image, videoUrl });
   };
 
   return (
