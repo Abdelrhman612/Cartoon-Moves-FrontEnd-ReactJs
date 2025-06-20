@@ -4,6 +4,7 @@ export interface MovieCardProps {
   videoUrl: string;
   image: string;
   onEdit: () => void;
+  onDelete?: () => void;
 }
 export interface MovieInterface {
   id: string;
