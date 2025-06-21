@@ -66,7 +66,6 @@ function Home() {
   };
 
   const handleToggleFavorite = (movieId: string) => {
-    console.log("clicked", movieId); // ✅ Debug
     const isFav = favorites.some((fav) => fav.id === movieId);
     if (isFav) {
       removeFavorite(movieId);
