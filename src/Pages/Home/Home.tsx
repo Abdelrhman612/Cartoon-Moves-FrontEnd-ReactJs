@@ -9,7 +9,6 @@ import ReviewModal from "../../Components/Review/ReviewModal";
 import { ReviewService } from "../../Service/Review/Review.Service";
 
 function Home() {
-  const userId = localStorage.getItem("UserId") || ""; // ✅ replace with actual auth logic
   const { useGetMovies, useDeleteMovie, useFavorites } = UseMoves();
   const [showReviewModal, setShowReviewModal] = useState(false);
   const [selectedMovieReviews, setSelectedMovieReviews] = useState<
@@ -31,7 +30,7 @@ function Home() {
     addFavorite,
     removeFavorite,
     loading: favLoading,
-  } = useFavorites(userId);
+  } = useFavorites("");
 
   const [showModal, setShowModal] = useState(false);
   const [selectedMovie, setSelectedMovie] = useState<
