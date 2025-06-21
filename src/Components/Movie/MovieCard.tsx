@@ -10,7 +10,6 @@ const MovieCard = ({
   onDelete,
   onToggleFavorite,
   isFavorite,
-  onShowReviews,
 }: MovieCardProps) => {
   return (
     <Card style={{ height: "100%" }}>
@@ -36,9 +35,7 @@ const MovieCard = ({
               {isFavorite ? "💔 Remove Favorite" : "❤️ Add to Favorite"}
             </Button>
           )}
-          <Button variant="info" onClick={onShowReviews}>
-            View Reviews
-          </Button>
+  
         </div>
       </Card.Body>
     </Card>

@@ -4,17 +4,10 @@ import MovieCard from "../../Components/Movie/MovieCard";
 import MovieModal from "../../Components/Movie/MovieModal";
 import { UseMoves } from "../../Hooks/UseMoves";
 import type { MovieHomeProps } from "./Home.interface";
-import type { ReviewInterface } from "../../Components/Review/Review.interface";
-import ReviewModal from "../../Components/Review/ReviewModal";
-import { ReviewService } from "../../Service/Review/Review.Service";
 
 function Home() {
   const { useGetMovies, useDeleteMovie, useFavorites } = UseMoves();
-  const [showReviewModal, setShowReviewModal] = useState(false);
-  const [selectedMovieReviews, setSelectedMovieReviews] = useState<
-    ReviewInterface[]
-  >([]);
-  const [reviewMovieTitle, setReviewMovieTitle] = useState("");
+
   const {
     filteredMovies,
     searchInput,
@@ -57,12 +50,6 @@ function Home() {
   const handleFormSubmit = async () => {
     await fetchMovies(); // Re-fetch after create/edit
     handleCloseModal(); // Close modal
-  };
-  const handleShowReviews = async (movie: MovieHomeProps) => {
-    const data = await ReviewService().getReviews(movie.id); // يفترض عندك ReviewService
-    setSelectedMovieReviews(data);
-    setReviewMovieTitle(movie.title);
-    setShowReviewModal(true);
   };
 
   const handleToggleFavorite = (movieId: string) => {
@@ -120,7 +107,6 @@ function Home() {
                 onDelete={() => handleDelete(movie.id)}
                 onToggleFavorite={() => handleToggleFavorite(movie.id)}
                 isFavorite={isFavorite(movie.id)}
-                onShowReviews={() => handleShowReviews(movie)}
               />
             </Col>
           ))
@@ -134,12 +120,6 @@ function Home() {
         onClose={handleCloseModal}
         initialData={selectedMovie}
         onSubmit={handleFormSubmit}
-      />
-      <ReviewModal
-        show={showReviewModal}
-        onClose={() => setShowReviewModal(false)}
-        reviews={selectedMovieReviews}
-        movieTitle={reviewMovieTitle}
       />
     </Container>
   );
