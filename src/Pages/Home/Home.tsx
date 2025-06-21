@@ -6,8 +6,8 @@ import { UseMoves } from "../../Hooks/UseMoves";
 import type { MovieHomeProps } from "./Home.interface";
 
 function Home() {
+  // const userId = localStorage.getItem("UserId") || "";
   const { useGetMovies, useDeleteMovie, useFavorites } = UseMoves();
-
   const {
     filteredMovies,
     searchInput,
@@ -53,6 +53,7 @@ function Home() {
   };
 
   const handleToggleFavorite = (movieId: string) => {
+    console.log("clicked", movieId); // ✅ Debug
     const isFav = favorites.some((fav) => fav.id === movieId);
     if (isFav) {
       removeFavorite(movieId);
